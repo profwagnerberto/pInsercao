@@ -1,7 +1,7 @@
 package br.com.academico.teste;
 
 import java.sql.Connection;
-import java.sql.Statement;
+import java.sql.PreparedStatement;
 
 import br.com.academico.jdbc.FabricaDeConexoes;
 
@@ -12,13 +12,16 @@ public class TesteDeInsercao {
       Connection con = FabricaDeConexoes.pegarConexao();
 
       String vCpf = "1";
+      String vNome = "Henzo";
+      
+      String sql = "insert into tbaluno (cpf, nome) values (?, ?)";
 
-      String sql = "insert into tbaluno (cpf) values ('" + vCpf + "')";
+      PreparedStatement stmt = con.prepareStatement(sql);
+      stmt.setString(1, vCpf);
+      stmt.setString(2, vNome);
+      stmt.execute();
 
-      Statement stmt = con.createStatement();
-      stmt.execute(sql);
-
-      System.out.println("Inserido");
+      System.out.println("Inserido por parâmetros");
       FabricaDeConexoes.encerrarRecursosBD(con, stmt);
     } catch (Exception e) {
       System.err.println("Erro no banco de dados: " + "\n" + 
